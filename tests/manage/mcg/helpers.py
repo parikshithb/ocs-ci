@@ -1,7 +1,6 @@
 import logging
 import os
 from concurrent.futures import ThreadPoolExecutor
-from uuid import uuid4
 
 import boto3
 
@@ -610,42 +609,3 @@ def s3_list_object_versions(s3_obj, bucketname, prefix=''):
         dict : List object version response
     """
     return s3_obj.s3_client.list_object_versions(Bucket=bucketname, Prefix=prefix)
-
-
-def del_objects(uploaded_objects_paths, awscli_pod, mcg_obj):
-    for uploaded_filename in uploaded_objects_paths:
-        logger.info(f'Deleting object {uploaded_filename}')
-        awscli_pod.exec_cmd_on_pod(
-            command=craft_s3_command(mcg_obj, "rm " + uploaded_filename),
-            secrets=[mcg_obj.access_key_id, mcg_obj.access_key, mcg_obj.s3_endpoint]
-        )
-
-
-def get_full_path_object(downloaded_files, bucket_name):
-    uploaded_objects_paths = []
-    for uploaded_filename in downloaded_files:
-        uploaded_objects_paths.append(f"s3://{bucket_name}/{uploaded_filename}")
-
-    return uploaded_objects_paths
-
-
-def obc_io_create_delete(mcg_obj, awscli_pod, bucket_factory):
-    dir = '/aws/' + uuid4().hex + '_original/'
-    downloaded_files = retrieve_test_objects_to_pod(awscli_pod, dir)
-    bucket_name = bucket_factory(amount=1, interface='OC')[0].name
-    mcg_bucket_path = f's3://{bucket_name}/'
-    uploaded_objects_paths = get_full_path_object(downloaded_files, bucket_name)
-    sync_object_directory(awscli_pod, dir, mcg_bucket_path, mcg_obj)
-    del_objects(uploaded_objects_paths, awscli_pod, mcg_obj)
-    awscli_pod.exec_cmd_on_pod(command=f'rm -rf {dir}')
-
-# def obc_put_obj_create_delete(mcg_obj, bucket_factory):
-#     data = "asdasd"
-#     bucket_name = bucket_factory(amount=1, interface='OC')[0].name
-#     for i in range(0, 100):
-#         key = 'pari' + f"{i}"
-#         s3_put_object(mcg_obj, bucket_name, key, data)
-#     for i in range(0, 100):
-#         key = 'pari' + f"{i}"
-#         s3_delete_object(mcg_obj, bucket_name, key)
-
