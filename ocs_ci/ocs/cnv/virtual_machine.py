@@ -249,9 +249,7 @@ class VirtualMachine(Virtctl):
         """
         vm_username = vm_username if vm_username else self.get_os_username()
         vm_dest_path = vm_dest_path if vm_dest_path else "."
-        identity_file = (
-            identity_file if identity_file else get_ssh_private_key_path()
-        )
+        identity_file = identity_file if identity_file else get_ssh_private_key_path()
         logger.info(
             f"Starting scp from local machine path: {local_path} to VM path: {vm_dest_path}"
         )
@@ -285,9 +283,7 @@ class VirtualMachine(Virtctl):
              str: stdout of command
         """
         vm_username = vm_username if vm_username else self.get_os_username()
-        identity_file = (
-            identity_file if identity_file else get_ssh_private_key_path()
-        )
+        identity_file = identity_file if identity_file else get_ssh_private_key_path()
         logger.info(
             f"Starting scp from VM path: {vm_src_path} to local machine path: {local_path}"
         )
@@ -301,7 +297,9 @@ class VirtualMachine(Virtctl):
             recursive=recursive,
         )
 
-    def run_ssh_cmd(self, command, username=None, use_sudo=True, identity_file=None, ctx = None):
+    def run_ssh_cmd(
+        self, command, username=None, use_sudo=True, identity_file=None, ctx=None
+    ):
         """
         Connect to the VirtualMachine using SSH and execute a command.
         Args:
@@ -316,9 +314,7 @@ class VirtualMachine(Virtctl):
         if ctx:
             config.switch_ctx(ctx)
         username = username if username else self.get_os_username()
-        identity_file = (
-            identity_file if identity_file else get_ssh_private_key_path()
-        )
+        identity_file = identity_file if identity_file else get_ssh_private_key_path()
         return self.run_ssh_command(
             self._vm_name,
             username,

@@ -14,7 +14,8 @@ from ocs_ci.helpers import dr_helpers
 from ocs_ci.helpers.cnv_helpers import create_vm_secret, get_secret_from_vm
 from ocs_ci.helpers.helpers import (
     delete_volume_in_backend,
-    verify_volume_deleted_in_backend, create_project,
+    verify_volume_deleted_in_backend,
+    create_project,
 )
 from ocs_ci.ocs import constants, ocp
 from ocs_ci.ocs.exceptions import (
@@ -555,7 +556,9 @@ class CnvWorkload(DRWorkload):
                 if str(ex).find("(AlreadyExists)"):
                     log.warning("The namespace already exists !")
 
-            self.secret_obj.append(create_vm_secret(name="vm-secret-1", namespace=self.workload_namespace))
+            self.secret_obj.append(
+                create_vm_secret(name="vm-secret-1", namespace=self.workload_namespace)
+            )
 
         # Load DRPC
         drpc_yaml_data = templating.load_yaml(self.drpc_yaml_file)

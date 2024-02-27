@@ -13,6 +13,7 @@ class UnsupportedOSType(Exception):
 class CephHealthException(Exception):
     pass
 
+
 class UsernameNotFoundException(Exception):
     pass
 

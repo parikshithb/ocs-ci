@@ -87,6 +87,7 @@ def create_vm_using_standalone_pvc(
         resource=pvc_data_obj, state=constants.STATUS_BOUND, timeout=300
     )
     from ocs_ci.ocs.cnv.virtual_machine import VirtualMachine
+
     vm_obj = VirtualMachine(vm_name=vm_ocs_obj.name, namespace=namespace)
     if running:
         vm_obj.wait_for_vm_status(status=constants.VM_RUNNING)
@@ -163,7 +164,9 @@ def create_vm_secret(path=None, name=None, namespace=constants.CNV_NAMESPACE):
     if name:
         secret_data["metadata"]["name"] = name
     else:
-        secret_data["metadata"]["name"] = create_unique_resource_name("vm-test", "secret")
+        secret_data["metadata"]["name"] = create_unique_resource_name(
+            "vm-test", "secret"
+        )
     secret_data["metadata"]["namespace"] = namespace
     ssh_pub_key, _ = get_ssh_pub_key_with_filename(path=path)
     base64_key = convert_ssh_key_to_base64(ssh_key=ssh_pub_key)

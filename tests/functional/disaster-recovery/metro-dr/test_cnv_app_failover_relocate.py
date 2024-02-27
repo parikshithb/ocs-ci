@@ -103,7 +103,11 @@ class TestCnvApplicationMDR:
         md5sum_original = []
         vm_obj = []
         for cnv_wl in cnv_workloads:
-            vm_obj.append(VirtualMachine(vm_name=cnv_wl.vm_name, namespace=cnv_wl.workload_namespace))
+            vm_obj.append(
+                VirtualMachine(
+                    vm_name=cnv_wl.vm_name, namespace=cnv_wl.workload_namespace
+                )
+            )
             # config.switch_to_cluster_by_name("pbyregow-x1")
             # vm_obj = VirtualMachine(vm_name=cnv_wl.vm_name, namespace=cnv_wl.workload_namespace)
             # vm_obj = VirtualMachine(vm_name=vm_name, namespace=self.wl_namespace)
@@ -113,9 +117,7 @@ class TestCnvApplicationMDR:
             obj.run_ssh_cmd(
                 command="dd if=/dev/zero of=/dd_file.txt bs=1024 count=102400"
             )
-            md5sum_cmd_out = obj.run_ssh_cmd(
-                command="md5sum /dd_file.txt"
-            )
+            md5sum_cmd_out = obj.run_ssh_cmd(command="md5sum /dd_file.txt")
             md5sum_original.append(md5sum_cmd_out.split()[0])
             logger.info(md5sum_original)
 
@@ -166,12 +168,13 @@ class TestCnvApplicationMDR:
         )
         for count, vm in enumerate(vm_obj):
             # ctx = config.cur_index
-            md5sum_fail_out = vm.run_ssh_cmd(command="md5sum /dd_file.txt", username="cirros",)
+            md5sum_fail_out = vm.run_ssh_cmd(
+                command="md5sum /dd_file.txt",
+                username="cirros",
+            )
             md5sum_fail = md5sum_fail_out.split()[0]
             if md5sum_original[count] == md5sum_fail:
-                 logger.info(
-                    f"Passed: MD5 comparison "
-                )
+                logger.info(f"Passed: MD5 comparison ")
 
         # Start nodes if cluster is down
         wait_time = 120
@@ -249,12 +252,10 @@ class TestCnvApplicationMDR:
             set_current_primary_cluster_context(
                 self.wl_namespace, cnv_workloads[0].workload_type
             )
-            md5sum_relo_out = vm.run_ssh_cmd(username="cirros",
-                command="md5sum /dd_file.txt"
+            md5sum_relo_out = vm.run_ssh_cmd(
+                username="cirros", command="md5sum /dd_file.txt"
             )
             md5sum_relo = md5sum_relo_out.split()[0]
             if md5sum_original[count] == md5sum_relo:
-                 logger.info(
-                    f"Passed: MD5 comparison "
-                )
+                logger.info(f"Passed: MD5 comparison ")
         # TODO: Validate Data integrity
