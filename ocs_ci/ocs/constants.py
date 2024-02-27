@@ -2280,6 +2280,31 @@ STAGE_0_NAMESPACE = "ever-running-project"
 
 FSYNC = os.path.join(TEMPLATE_WORKLOAD_DIR, "helper_scripts/fsync.py")
 
+CNV_VM_SECRET_YAML = os.path.join(TEMPLATE_DEPLOYMENT_DIR_CNV, "vm-secret.yaml")
+TEMPLATE_CNV_VM_WORKLOAD_DIR = os.path.join(TEMPLATE_DIR, "cnv-vm-workload")
+TEMPLATE_CNV_VM_STANDALONE_PVC_DIR = os.path.join(
+    TEMPLATE_CNV_VM_WORKLOAD_DIR, "vm-standalone-pvc"
+)
+# CNV VM constants
+VIRTUAL_MACHINE = "VirtualMachine"
+VIRTUAL_MACHINE_INSTANCE = "VirtualMachineInstance"
+VM_RUNNING = "Running"
+CNV_VM_STOPPED = "Stopped"
+VM_PAUSED = "Paused"
+DEFAULT_CNV_CEPH_RBD_SC = "ocs-storagecluster-ceph-rbd-virtualization"
+VOLUME_IMPORT_SOURCE = "VolumeImportSource"
+
+# CNV VM workload yamls
+CNV_VM_STANDALONE_PVC_SOURCE_YAML = os.path.join(
+    TEMPLATE_CNV_VM_STANDALONE_PVC_DIR, "source.yaml"
+)
+CNV_VM_STANDALONE_PVC_PVC_YAML = os.path.join(
+    TEMPLATE_CNV_VM_STANDALONE_PVC_DIR, "pvc.yaml"
+)
+CNV_VM_STANDALONE_PVC_VM_YAML = os.path.join(
+    TEMPLATE_CNV_VM_STANDALONE_PVC_DIR, "vm.yaml"
+)
+
 # Sno and lvmo constants
 SNO_NODE_NAME = "sno-edge-0"
 LVMO_POD_LABEL = {
